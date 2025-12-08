@@ -1,0 +1,2913 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCI — Teoría del Campo Intangible</title>
+    
+    <!-- MathJax configuración -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #e8e6e3;
+            --text-secondary: #a8a5a0;
+            --text-muted: #6b6965;
+            --accent: #c9a227;
+            --accent-dim: #8a7020;
+            --accent-glow: rgba(201, 162, 39, 0.15);
+            --accent-blue: #4a7c9c;
+            --accent-blue-dim: #3a5c7c;
+            --accent-blue-glow: rgba(74, 124, 156, 0.15);
+            --border: #2a2a35;
+            --success: #4a9c6d;
+            --serif: 'Crimson Pro', Georgia, serif;
+            --sans: 'Source Sans 3', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 17px;
+        }
+
+        body {
+            font-family: var(--serif);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            min-height: 100vh;
+        }
+
+        /* === LANGUAGE TOGGLE === */
+        .lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .lang-btn {
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent-dim);
+            color: var(--text-secondary);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* === LAYOUT === */
+        .layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 1000px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 2rem 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0;
+        }
+
+        .sidebar-logo {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-title {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .sidebar-author {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .nav-section {
+            padding: 0.75rem 1.5rem;
+        }
+
+        .nav-section-title {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-section-title.tci-p {
+            color: var(--accent-blue);
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.4rem 0;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 0.75rem;
+            margin-left: -0.75rem;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            border-left-color: var(--accent-dim);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .nav-link.tci-p:hover {
+            border-left-color: var(--accent-blue-dim);
+        }
+
+        .nav-link.tci-p.active {
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+        }
+
+        /* === MAIN CONTENT === */
+        .main {
+            grid-column: 2;
+            padding: 3rem 4rem 6rem;
+            max-width: 900px;
+        }
+
+        @media (max-width: 1000px) {
+            .main {
+                grid-column: 1;
+                padding: 2rem 1.5rem 4rem;
+            }
+        }
+
+        /* === HEADER === */
+        .header {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-eyebrow {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-family: var(--serif);
+            font-size: 2.8rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-meta-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* === SECTIONS === */
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .section-number {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-number.tci-p {
+            color: var(--accent-blue);
+        }
+
+        h2 {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 2rem 0 0.75rem;
+            color: var(--accent);
+        }
+
+        h4.tci-p {
+            color: var(--accent-blue);
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        /* === EQUATIONS === */
+        .equation {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation.tci-p {
+            border-left-color: var(--accent-blue);
+        }
+
+        .equation-label {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .equation-label.tci-p {
+            color: var(--accent-blue);
+        }
+
+        /* === HIGHLIGHT BOXES === */
+        .highlight {
+            background: linear-gradient(135deg, var(--accent-glow), transparent);
+            border: 1px solid var(--accent-dim);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .highlight.tci-p {
+            background: linear-gradient(135deg, var(--accent-blue-glow), transparent);
+            border-color: var(--accent-blue-dim);
+        }
+
+        .highlight-title {
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .highlight-title.tci-p {
+            color: var(--accent-blue);
+        }
+
+        .key-result {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--success);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .key-result::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        /* === LISTS === */
+        ul, ol {
+            margin: 1.25rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* === TABLES === */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        th.tci-p {
+            border-bottom-color: var(--accent-blue);
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        /* === TABS === */
+        .tabs {
+            margin: 2rem 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-button {
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab-button:hover {
+            color: var(--text-secondary);
+        }
+
+        .tab-button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-button.tci-p.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === ANALOGY BOXES === */
+        .analogy {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .analogy::before {
+            content: "💡";
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            position: absolute;
+            top: -0.6rem;
+            left: 1rem;
+            background: var(--bg-secondary);
+            padding: 0 0.5rem;
+        }
+
+        .analogy-label {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        /* === COMPARISON === */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 600px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-item.highlight-good {
+            border-color: var(--success);
+        }
+
+        .comparison-item.highlight-bad {
+            border-color: #9c4a4a;
+        }
+
+        .comparison-item.highlight-tci {
+            border-color: var(--accent);
+        }
+
+        .comparison-item.highlight-tcip {
+            border-color: var(--accent-blue);
+        }
+
+        .comparison-title {
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .comparison-item.highlight-good .comparison-title {
+            color: var(--success);
+        }
+
+        .comparison-item.highlight-bad .comparison-title {
+            color: #9c4a4a;
+        }
+
+        .comparison-item.highlight-tci .comparison-title {
+            color: var(--accent);
+        }
+
+        .comparison-item.highlight-tcip .comparison-title {
+            color: var(--accent-blue);
+        }
+
+        /* === QUOTE === */
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* === PART DIVIDER === */
+        .part-divider {
+            margin: 5rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .part-divider-label {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .part-divider-title {
+            font-family: var(--serif);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .part-divider-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-author {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer-license {
+            margin-top: 2rem;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 3rem 0;
+        }
+
+        /* === PROGRESS BAR === */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 300px;
+            right: 0;
+            height: 3px;
+            background: var(--bg-tertiary);
+            z-index: 99;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        @media (max-width: 1000px) {
+            .progress-bar {
+                left: 0;
+                top: 56px;
+            }
+        }
+
+        /* === MOBILE NAV === */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            z-index: 100;
+        }
+
+        @media (max-width: 1000px) {
+            .mobile-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .main {
+                padding-top: 5rem;
+            }
+        }
+
+        .mobile-nav-title {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .mobile-nav-button {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav-right {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .mobile-lang-btn {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.3rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .mobile-lang-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Sidebar mobile open state */
+        @media (max-width: 1000px) {
+            .sidebar.mobile-open {
+                display: block;
+                position: fixed;
+                top: 56px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 56px);
+                z-index: 99;
+                overflow-y: auto;
+            }
+        }
+
+        /* === MATRIX TABLE === */
+        .matrix-table {
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+
+        .matrix-table th, .matrix-table td {
+            text-align: center;
+            width: 60px;
+        }
+
+        .matrix-table .repulsion {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .matrix-table .attraction {
+            color: #2ecc71;
+            font-weight: 600;
+        }
+
+        /* === BRIDGE SECTION === */
+        .bridge-section {
+            background: linear-gradient(135deg, var(--accent-glow), var(--accent-blue-glow));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .bridge-title {
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        /* === LANG SPECIFIC === */
+        [data-lang-es], [data-lang-en] {
+            display: none;
+        }
+
+        [lang="es"] [data-lang-es] {
+            display: block;
+        }
+
+        [lang="en"] [data-lang-en] {
+            display: block;
+        }
+
+        span[data-lang-es], span[data-lang-en],
+        a[data-lang-es], a[data-lang-en] {
+            display: none;
+        }
+
+        [lang="es"] span[data-lang-es],
+        [lang="es"] a[data-lang-es] {
+            display: inline;
+        }
+
+        [lang="en"] span[data-lang-en],
+        [lang="en"] a[data-lang-en] {
+            display: inline;
+        }
+
+        /* Nav links should be block, not inline */
+        [lang="es"] a.nav-link[data-lang-es],
+        [lang="en"] a.nav-link[data-lang-en] {
+            display: block;
+        }
+
+        tspan[data-lang-es], tspan[data-lang-en] {
+            display: none;
+        }
+
+        [lang="es"] tspan[data-lang-es] {
+            display: inline;
+        }
+
+        [lang="en"] tspan[data-lang-en] {
+            display: inline;
+        }
+
+        svg text[data-lang-es], svg text[data-lang-en] {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        [lang="es"] svg text[data-lang-es] {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        [lang="en"] svg text[data-lang-en] {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        li[data-lang-es], li[data-lang-en] {
+            display: none;
+        }
+
+        [lang="es"] li[data-lang-es] {
+            display: list-item;
+        }
+
+        [lang="en"] li[data-lang-en] {
+            display: list-item;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <span class="mobile-nav-title">TCI</span>
+        <div class="mobile-nav-right">
+            <button class="mobile-lang-btn active" id="mobile-btn-es" onclick="setLang('es')">ES</button>
+            <button class="mobile-lang-btn" id="mobile-btn-en" onclick="setLang('en')">EN</button>
+            <button class="mobile-nav-button" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span data-lang-es>Documento Unificado</span>
+                    <span data-lang-en>Unified Document</span>
+                </div>
+                <div class="sidebar-title">
+                    <span data-lang-es>Teoría del Campo Intangible</span>
+                    <span data-lang-en>Intangible Field Theory</span>
+                </div>
+                <div class="sidebar-author">Nicolás Irigoyen • 2025</div>
+            </div>
+
+            <!-- Language Toggle -->
+            <div class="lang-toggle">
+                <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
+                <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">
+                    <span data-lang-es>Parte I — TCI</span>
+                    <span data-lang-en>Part I — IFT</span>
+                </div>
+                <a href="#resumen" class="nav-link" data-lang-es>Resumen</a>
+                <a href="#resumen" class="nav-link" data-lang-en>Summary</a>
+                <a href="#hipotesis" class="nav-link" data-lang-es>Hipótesis Fundamental</a>
+                <a href="#hipotesis" class="nav-link" data-lang-en>Fundamental Hypothesis</a>
+                <a href="#parametro" class="nav-link" data-lang-es>El Parámetro ρ₀</a>
+                <a href="#parametro" class="nav-link" data-lang-en>The Parameter ρ₀</a>
+                <a href="#perfil-densidad" class="nav-link" data-lang-es>Perfil de Densidad</a>
+                <a href="#perfil-densidad" class="nav-link" data-lang-en>Density Profile</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">
+                    <span data-lang-es>Derivaciones TCI</span>
+                    <span data-lang-en>IFT Derivations</span>
+                </div>
+                <a href="#energia" class="nav-link">E = mc²</a>
+                <a href="#inercia" class="nav-link" data-lang-es>Inercia</a>
+                <a href="#inercia" class="nav-link" data-lang-en>Inertia</a>
+                <a href="#masa-relativista" class="nav-link" data-lang-es>Masa Relativista</a>
+                <a href="#masa-relativista" class="nav-link" data-lang-en>Relativistic Mass</a>
+                <a href="#dilatacion" class="nav-link" data-lang-es>Dilatación Temporal</a>
+                <a href="#dilatacion" class="nav-link" data-lang-en>Time Dilation</a>
+                <a href="#deflexion" class="nav-link" data-lang-es>Deflexión de Luz</a>
+                <a href="#deflexion" class="nav-link" data-lang-en>Light Deflection</a>
+                <a href="#curvas-rotacion" class="nav-link" data-lang-es>Curvas de Rotación</a>
+                <a href="#curvas-rotacion" class="nav-link" data-lang-en>Rotation Curves</a>
+                <a href="#tully-fisher" class="nav-link">Tully-Fisher</a>
+                <a href="#constante-a0" class="nav-link" data-lang-es>Constante a₀</a>
+                <a href="#constante-a0" class="nav-link" data-lang-en>Constant a₀</a>
+                <a href="#energia-vacio" class="nav-link" data-lang-es>Energía del Vacío</a>
+                <a href="#energia-vacio" class="nav-link" data-lang-en>Vacuum Energy</a>
+                <a href="#coincidencia" class="nav-link" data-lang-es>Coincidencia Cósmica</a>
+                <a href="#coincidencia" class="nav-link" data-lang-en>Cosmic Coincidence</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">
+                    <span data-lang-es>Puente Conceptual</span>
+                    <span data-lang-en>Conceptual Bridge</span>
+                </div>
+                <a href="#puente" class="nav-link" data-lang-es>De TCI a TCI-P</a>
+                <a href="#puente" class="nav-link" data-lang-en>From IFT to IFT-P</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title tci-p">
+                    <span data-lang-es>Parte II — TCI-P</span>
+                    <span data-lang-en>Part II — IFT-P</span>
+                </div>
+                <a href="#tcip-intro" class="nav-link tci-p" data-lang-es>Introducción a TCI-P</a>
+                <a href="#tcip-intro" class="nav-link tci-p" data-lang-en>Introduction to IFT-P</a>
+                <a href="#particulas" class="nav-link tci-p" data-lang-es>Partículas Fundamentales</a>
+                <a href="#particulas" class="nav-link tci-p" data-lang-en>Fundamental Particles</a>
+                <a href="#interacciones" class="nav-link tci-p" data-lang-es>Reglas de Interacción</a>
+                <a href="#interacciones" class="nav-link tci-p" data-lang-en>Interaction Rules</a>
+                <a href="#masa-intrinseca" class="nav-link tci-p" data-lang-es>Masa Intrínseca vs Emergente</a>
+                <a href="#masa-intrinseca" class="nav-link tci-p" data-lang-en>Intrinsic vs Emergent Mass</a>
+                <a href="#estructuras" class="nav-link tci-p" data-lang-es>Estructuras Emergentes</a>
+                <a href="#estructuras" class="nav-link tci-p" data-lang-en>Emergent Structures</a>
+                <a href="#ondulacion" class="nav-link tci-p" data-lang-es>Mecanismo de Ondulación</a>
+                <a href="#ondulacion" class="nav-link tci-p" data-lang-en>Wave Mechanism</a>
+                <a href="#cuantizacion" class="nav-link tci-p" data-lang-es>Cuantización de Órbitas</a>
+                <a href="#cuantizacion" class="nav-link tci-p" data-lang-en>Orbit Quantization</a>
+                <a href="#estabilidad" class="nav-link tci-p" data-lang-es>Estabilidad Atómica</a>
+                <a href="#estabilidad" class="nav-link tci-p" data-lang-en>Atomic Stability</a>
+                <a href="#transicion" class="nav-link tci-p" data-lang-es>Mecánica de Transición</a>
+                <a href="#transicion" class="nav-link tci-p" data-lang-en>Transition Mechanics</a>
+                <a href="#fotoelectrico" class="nav-link tci-p" data-lang-es>Efecto Fotoeléctrico</a>
+                <a href="#fotoelectrico" class="nav-link tci-p" data-lang-en>Photoelectric Effect</a>
+                <a href="#doble-rendija" class="nav-link tci-p" data-lang-es>Doble Rendija</a>
+                <a href="#doble-rendija" class="nav-link tci-p" data-lang-en>Double Slit</a>
+                <a href="#dualidad" class="nav-link tci-p" data-lang-es>Dualidad Onda-Partícula</a>
+                <a href="#dualidad" class="nav-link tci-p" data-lang-en>Wave-Particle Duality</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">
+                    <span data-lang-es>Síntesis</span>
+                    <span data-lang-en>Synthesis</span>
+                </div>
+                <a href="#correspondencias" class="nav-link" data-lang-es>Correspondencias</a>
+                <a href="#correspondencias" class="nav-link" data-lang-en>Correspondences</a>
+                <a href="#verificaciones" class="nav-link" data-lang-es>Verificaciones</a>
+                <a href="#verificaciones" class="nav-link" data-lang-en>Verifications</a>
+                <a href="#discusion-eter" class="nav-link" data-lang-es>Discusión: ¿Éter?</a>
+                <a href="#discusion-eter" class="nav-link" data-lang-en>Discussion: Ether?</a>
+                <a href="#trabajo-futuro" class="nav-link" data-lang-es>Trabajo Futuro</a>
+                <a href="#trabajo-futuro" class="nav-link" data-lang-en>Future Work</a>
+                <a href="#contacto" class="nav-link" data-lang-es>Contacto</a>
+                <a href="#contacto" class="nav-link" data-lang-en>Contact</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-eyebrow">
+                    <span data-lang-es>Documento Unificado</span>
+                    <span data-lang-en>Unified Document</span>
+                </div>
+                <h1>
+                    <span data-lang-es>Teoría del Campo Intangible</span>
+                    <span data-lang-en>Intangible Field Theory</span>
+                </h1>
+                <p class="header-subtitle">
+                    <span data-lang-es>Una unificación de gravedad, cosmología y física cuántica desde un único sustrato</span>
+                    <span data-lang-en>A unification of gravity, cosmology, and quantum physics from a single substrate</span>
+                </p>
+                <div class="header-meta">
+                    <div class="header-meta-item">
+                        <span class="header-meta-label" data-lang-es>Autor:</span>
+                        <span class="header-meta-label" data-lang-en>Author:</span>
+                        <span>Nicolás Irigoyen</span>
+                    </div>
+                    <div class="header-meta-item">
+                        <span class="header-meta-label" data-lang-es>Versión:</span>
+                        <span class="header-meta-label" data-lang-en>Version:</span>
+                        <span data-lang-es>2.0 Unificada</span>
+                        <span data-lang-en>2.0 Unified</span>
+                    </div>
+                    <div class="header-meta-item">
+                        <span class="header-meta-label" data-lang-es>Fecha:</span>
+                        <span class="header-meta-label" data-lang-en>Date:</span>
+                        <span data-lang-es>Diciembre 2025</span>
+                        <span data-lang-en>December 2025</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Nota epistemológica -->
+            <div class="analogy" style="margin-bottom: 3rem;">
+                <p data-lang-es>
+                    <strong>Nota:</strong> Este trabajo presenta modelos matemáticos de fenómenos observados en la naturaleza. 
+                    Como todo modelo científico, son aproximaciones racionales a una realidad que, en última instancia, 
+                    trasciende la razón. Las ecuaciones aquí presentadas no pretenden capturar la totalidad de lo real, 
+                    sino mapear aspectos de su estructura observable.
+                </p>
+                <p data-lang-en>
+                    <strong>Note:</strong> This work presents mathematical models of phenomena observed in nature. 
+                    Like all scientific models, they are rational approximations to a reality that, ultimately, 
+                    transcends reason. The equations presented here do not claim to capture the totality of the real, 
+                    but to map aspects of its observable structure.
+                </p>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PARTE I: TCI -->
+            <!-- ========================================== -->
+
+            <!-- Resumen -->
+            <section id="resumen">
+                <span class="section-number">01</span>
+                <h2>
+                    <span data-lang-es>Resumen</span>
+                    <span data-lang-en>Summary</span>
+                </h2>
+                
+                <p data-lang-es>
+                    La Teoría del Campo Intangible (TCI) propone que el espacio está permeado por un medio de partículas repulsivas 
+                    con densidad uniforme ρ₀ = 2.4 × 10⁻²⁷ kg/m³. La materia existe como "huecos" estables en este medio, 
+                    y las perturbaciones viajan a través de él a velocidad c.
+                </p>
+                <p data-lang-en>
+                    The Intangible Field Theory (IFT) proposes that space is permeated by a medium of repulsive particles 
+                    with uniform density ρ₀ = 2.4 × 10⁻²⁷ kg/m³. Matter exists as stable "holes" in this medium, 
+                    and perturbations travel through it at speed c.
+                </p>
+
+                <p data-lang-es>
+                    De esta única hipótesis emergen: la equivalencia masa-energía (E = mc²), la inercia, la masa relativista, 
+                    la dilatación temporal, la deflexión de la luz, las curvas de rotación galácticas, la relación Tully-Fisher, 
+                    la constante de MOND a₀, la energía del vacío, y la coincidencia cósmica a₀ ≈ cH₀.
+                </p>
+                <p data-lang-en>
+                    From this single hypothesis emerge: mass-energy equivalence (E = mc²), inertia, relativistic mass, 
+                    time dilation, light deflection, galactic rotation curves, the Tully-Fisher relation, 
+                    the MOND constant a₀, vacuum energy, and the cosmic coincidence a₀ ≈ cH₀.
+                </p>
+
+                <div class="highlight">
+                    <div class="highlight-title">
+                        <span data-lang-es>Resultado Central de TCI</span>
+                        <span data-lang-en>Central Result of IFT</span>
+                    </div>
+                    <p style="margin-bottom: 0;" data-lang-es>
+                        Un único parámetro (ρ₀) unifica fenómenos desde la escala atómica hasta la cosmológica, 
+                        eliminando la necesidad de materia oscura, energía oscura ajustada, o coincidencias inexplicables.
+                    </p>
+                    <p style="margin-bottom: 0;" data-lang-en>
+                        A single parameter (ρ₀) unifies phenomena from atomic to cosmological scales, 
+                        eliminating the need for dark matter, fine-tuned dark energy, or unexplained coincidences.
+                    </p>
+                </div>
+
+                <p data-lang-es>
+                    La extensión TCI-P (Parte II de este documento) lleva estas ideas al dominio cuántico, 
+                    mostrando cómo la cuantización, la dualidad onda-partícula y la estabilidad atómica emergen 
+                    del mismo sustrato físico.
+                </p>
+                <p data-lang-en>
+                    The IFT-P extension (Part II of this document) brings these ideas to the quantum domain, 
+                    showing how quantization, wave-particle duality, and atomic stability emerge 
+                    from the same physical substrate.
+                </p>
+            </section>
+
+            <!-- Hipótesis -->
+            <section id="hipotesis">
+                <span class="section-number">02</span>
+                <h2>
+                    <span data-lang-es>Hipótesis Fundamental</span>
+                    <span data-lang-en>Fundamental Hypothesis</span>
+                </h2>
+                
+                <p data-lang-es>
+                    El espacio no está vacío. Está lleno de un medio compuesto por partículas I (Intangibles) que se repelen entre sí, 
+                    manteniendo una densidad de equilibrio. Este medio tiene propiedades físicas bien definidas:
+                </p>
+                <p data-lang-en>
+                    Space is not empty. It is filled with a medium composed of I (Intangible) particles that repel each other, 
+                    maintaining an equilibrium density. This medium has well-defined physical properties:
+                </p>
+
+                <ul>
+                    <li data-lang-es>Las partículas I tienen masa intrínseca m<sub>I</sub> (responden a F = m<sub>I</sub>a)</li>
+                    <li data-lang-en>I particles have intrinsic mass m<sub>I</sub> (they respond to F = m<sub>I</sub>a)</li>
+                    <li data-lang-es>Las partículas I se repelen mutuamente, generando una presión de equilibrio</li>
+                    <li data-lang-en>I particles mutually repel, generating an equilibrium pressure</li>
+                    <li data-lang-es>La materia (T) repele al campo I, creando "huecos" de menor densidad</li>
+                    <li data-lang-en>Matter (T) repels the I field, creating "holes" of lower density</li>
+                    <li data-lang-es>Las perturbaciones viajan a través del medio a velocidad c</li>
+                    <li data-lang-en>Perturbations travel through the medium at speed c</li>
+                    <li data-lang-es>La densidad ρ₀ es uniforme a escalas cosmológicas</li>
+                    <li data-lang-en>The density ρ₀ is uniform at cosmological scales</li>
+                </ul>
+
+                <div class="highlight">
+                    <p class="highlight-title">
+                        <span data-lang-es>Nota sobre la velocidad c</span>
+                        <span data-lang-en>Note on the speed c</span>
+                    </p>
+                    <p data-lang-es>
+                        La velocidad c corresponde a la velocidad del sonido en el medio I, determinada por su módulo 
+                        de compresibilidad: c = √(K/ρ). En principio, c debería ser derivable de las propiedades 
+                        microscópicas del campo I. En este trabajo tomamos c como valor conocido empíricamente.
+                    </p>
+                    <p data-lang-en>
+                        The speed c corresponds to the speed of sound in the I medium, determined by its bulk 
+                        modulus: c = √(K/ρ). In principle, c should be derivable from the microscopic properties 
+                        of the I field. In this work we take c as an empirically known value.
+                    </p>
+                </div>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Densidad del Campo I</span>
+                        <span data-lang-en>I Field Density</span>
+                    </span>
+                    $$\rho_0 = 2.4 \times 10^{-27} \text{ kg/m}^3$$
+                </div>
+
+                <p data-lang-es>
+                    Esta densidad no es un parámetro libre ajustado arbitrariamente. Se deriva de la constante de aceleración 
+                    a₀ observada en dinámica galáctica, y produce predicciones verificables en otros dominios.
+                </p>
+                <p data-lang-en>
+                    This density is not an arbitrarily adjusted free parameter. It is derived from the acceleration constant 
+                    a₀ observed in galactic dynamics, and produces verifiable predictions in other domains.
+                </p>
+
+                <h3>
+                    <span data-lang-es>La notación T en TCI</span>
+                    <span data-lang-en>The T notation in IFT</span>
+                </h3>
+                <p data-lang-es>
+                    En TCI, usamos <strong>T</strong> (Tangible) como notación genérica para cualquier estructura material — 
+                    cualquier "hueco" estable en el campo I. A este nivel de descripción, no importa la composición interna 
+                    del hueco: solo importa cuánto campo I desplaza.
+                </p>
+                <p data-lang-en>
+                    In IFT, we use <strong>T</strong> (Tangible) as generic notation for any material structure — 
+                    any stable "hole" in the I field. At this level of description, the internal composition 
+                    of the hole doesn't matter: only how much I field it displaces matters.
+                </p>
+                <p data-lang-es>
+                    En la Parte II (TCI-P), veremos que estos huecos tienen estructura interna: están compuestos por 
+                    partículas T<sub>núcleo</sub> y E<sup>±</sup>. Pero para los fenómenos macroscópicos de TCI, 
+                    basta tratar toda la materia como "T".
+                </p>
+                <p data-lang-en>
+                    In Part II (IFT-P), we will see that these holes have internal structure: they are composed of 
+                    T<sub>nucleus</sub> and E<sup>±</sup> particles. But for macroscopic IFT phenomena, 
+                    it suffices to treat all matter as "T".
+                </p>
+            </section>
+
+            <!-- Parámetro -->
+            <section id="parametro">
+                <span class="section-number">03</span>
+                <h2>
+                    <span data-lang-es>El Parámetro ρ₀</span>
+                    <span data-lang-en>The Parameter ρ₀</span>
+                </h2>
+                
+                <p data-lang-es>
+                    La densidad ρ₀ se obtiene invirtiendo la relación que conecta las propiedades del campo I 
+                    con la escala de aceleración observada en galaxias:
+                </p>
+                <p data-lang-en>
+                    The density ρ₀ is obtained by inverting the relationship that connects the I field properties 
+                    with the acceleration scale observed in galaxies:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Relación fundamental</span>
+                        <span data-lang-en>Fundamental relation</span>
+                    </span>
+                    $$a_0 = c \sqrt{G \rho_0} \quad \Rightarrow \quad \rho_0 = \frac{a_0^2}{c^2 G}$$
+                </div>
+
+                <p data-lang-es>
+                    Usando el valor observado a₀ ≈ 1.2 × 10⁻¹⁰ m/s², se obtiene ρ₀ = 2.4 × 10⁻²⁷ kg/m³. 
+                    Este único valor genera predicciones en múltiples dominios físicos.
+                </p>
+                <p data-lang-en>
+                    Using the observed value a₀ ≈ 1.2 × 10⁻¹⁰ m/s², we obtain ρ₀ = 2.4 × 10⁻²⁷ kg/m³. 
+                    This single value generates predictions across multiple physical domains.
+                </p>
+
+                <div class="key-result">
+                    <span data-lang-es>Un solo parámetro medido en galaxias predice correctamente la energía del vacío a escala cosmológica.</span>
+                    <span data-lang-en>A single parameter measured in galaxies correctly predicts vacuum energy at cosmological scale.</span>
+                </div>
+            </section>
+
+            <!-- Perfil de Densidad -->
+            <section id="perfil-densidad">
+                <span class="section-number">03.1</span>
+                <h2>
+                    <span data-lang-es>Perfil de Densidad del Campo I</span>
+                    <span data-lang-en>I Field Density Profile</span>
+                </h2>
+                
+                <p data-lang-es>
+                    ¿Cómo varía la densidad del campo I alrededor de una partícula T? La respuesta emerge 
+                    de las leyes de interacción fundamentales y el equilibrio hidrostático.
+                </p>
+                <p data-lang-en>
+                    How does the I field density vary around a T particle? The answer emerges 
+                    from the fundamental interaction laws and hydrostatic equilibrium.
+                </p>
+
+                <h3>
+                    <span data-lang-es>Leyes de Interacción</span>
+                    <span data-lang-en>Interaction Laws</span>
+                </h3>
+                
+                <p data-lang-es>
+                    TCI postula dos interacciones repulsivas que siguen la ley del inverso del cuadrado:
+                </p>
+                <p data-lang-en>
+                    IFT postulates two repulsive interactions following the inverse square law:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Repulsión I-I (entre partículas del campo)</span>
+                        <span data-lang-en>I-I Repulsion (between field particles)</span>
+                    </span>
+                    $$F_{II} = \frac{k_{II}}{r^2}$$
+                </div>
+
+                <p data-lang-es>
+                    Esta repulsión mutua genera una presión de equilibrio P en el medio. Para un fluido 
+                    donde las perturbaciones viajan a velocidad c:
+                </p>
+                <p data-lang-en>
+                    This mutual repulsion generates an equilibrium pressure P in the medium. For a fluid 
+                    where perturbations travel at speed c:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Ecuación de estado</span>
+                        <span data-lang-en>Equation of state</span>
+                    </span>
+                    $$P = \rho_I c^2$$
+                </div>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Repulsión T-I (materia repele al campo)</span>
+                        <span data-lang-en>T-I Repulsion (matter repels the field)</span>
+                    </span>
+                    $$F_{TI} = \frac{k_T}{r^2}$$
+                </div>
+
+                <p data-lang-es>
+                    donde k<sub>T</sub> caracteriza la intensidad de repulsión de la partícula T.
+                </p>
+                <p data-lang-en>
+                    where k<sub>T</sub> characterizes the repulsion intensity of the T particle.
+                </p>
+
+                <h3>
+                    <span data-lang-es>Equilibrio Hidrostático</span>
+                    <span data-lang-en>Hydrostatic Equilibrium</span>
+                </h3>
+                
+                <p data-lang-es>
+                    Una partícula I a distancia r de T experimenta dos efectos: la repulsión de T 
+                    (hacia afuera) y el gradiente de presión del medio (hacia adentro, donde hay menos I).
+                    En equilibrio:
+                </p>
+                <p data-lang-en>
+                    An I particle at distance r from T experiences two effects: repulsion from T 
+                    (outward) and the pressure gradient of the medium (inward, where there is less I).
+                    At equilibrium:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Balance de fuerzas</span>
+                        <span data-lang-en>Force balance</span>
+                    </span>
+                    $$\frac{dP}{dr} = \rho_I(r) \cdot a(r) \quad \text{donde } a(r) = \frac{k_T}{m_I r^2}$$
+                </div>
+
+                <h3>
+                    <span data-lang-es>Ecuación Diferencial</span>
+                    <span data-lang-en>Differential Equation</span>
+                </h3>
+
+                <p data-lang-es>
+                    Sustituyendo P = ρ<sub>I</sub>c² y definiendo el radio característico r₀ = k<sub>T</sub>/(m<sub>I</sub>c²):
+                </p>
+                <p data-lang-en>
+                    Substituting P = ρ<sub>I</sub>c² and defining the characteristic radius r₀ = k<sub>T</sub>/(m<sub>I</sub>c²):
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Ecuación del perfil</span>
+                        <span data-lang-en>Profile equation</span>
+                    </span>
+                    $$\frac{d\rho_I}{dr} = \rho_I \cdot \frac{r_0}{r^2}$$
+                </div>
+
+                <h3>
+                    <span data-lang-es>Solución Exacta</span>
+                    <span data-lang-en>Exact Solution</span>
+                </h3>
+
+                <p data-lang-es>
+                    Separando variables e integrando con la condición ρ<sub>I</sub> → ρ₀ cuando r → ∞:
+                </p>
+                <p data-lang-en>
+                    Separating variables and integrating with the condition ρ<sub>I</sub> → ρ₀ when r → ∞:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Perfil de densidad exacto</span>
+                        <span data-lang-en>Exact density profile</span>
+                    </span>
+                    $$\boxed{\rho_I(r) = \rho_0 \cdot e^{-r_0/r}}$$
+                </div>
+
+                <div class="highlight">
+                    <p class="highlight-title">
+                        <span data-lang-es>Verificación</span>
+                        <span data-lang-en>Verification</span>
+                    </p>
+                    <ul>
+                        <li data-lang-es>Cuando r → ∞: e<sup>0</sup> = 1, entonces ρ<sub>I</sub> → ρ₀ ✓</li>
+                        <li data-lang-en>When r → ∞: e<sup>0</sup> = 1, so ρ<sub>I</sub> → ρ₀ ✓</li>
+                        <li data-lang-es>Cuando r → 0: e<sup>−∞</sup> = 0, entonces ρ<sub>I</sub> → 0 ✓</li>
+                        <li data-lang-en>When r → 0: e<sup>−∞</sup> = 0, so ρ<sub>I</sub> → 0 ✓</li>
+                        <li data-lang-es>Cuando r = r₀: ρ<sub>I</sub> = ρ₀/e ≈ 0.368ρ₀ (borde del hueco)</li>
+                        <li data-lang-en>When r = r₀: ρ<sub>I</sub> = ρ₀/e ≈ 0.368ρ₀ (hole boundary)</li>
+                    </ul>
+                </div>
+
+                <h3>
+                    <span data-lang-es>Aproximación para r >> r₀</span>
+                    <span data-lang-en>Approximation for r >> r₀</span>
+                </h3>
+
+                <p data-lang-es>
+                    Expandiendo en serie de Taylor para grandes distancias:
+                </p>
+                <p data-lang-en>
+                    Expanding in Taylor series for large distances:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Aproximación lineal</span>
+                        <span data-lang-en>Linear approximation</span>
+                    </span>
+                    $$\rho_I(r) \approx \rho_0 \left(1 - \frac{r_0}{r}\right) \quad \text{para } r >> r_0$$
+                </div>
+
+                <h3>
+                    <span data-lang-es>Significado Físico de r₀</span>
+                    <span data-lang-en>Physical Meaning of r₀</span>
+                </h3>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Radio característico</span>
+                        <span data-lang-en>Characteristic radius</span>
+                    </span>
+                    $$r_0 = \frac{k_T}{m_I c^2}$$
+                </div>
+
+                <p data-lang-es>
+                    El radio r₀ representa el tamaño efectivo del "hueco" que la partícula T genera en el campo I. 
+                    Está determinado por la intensidad de repulsión k<sub>T</sub>, la masa de las partículas I, 
+                    y la velocidad de propagación c en el medio.
+                </p>
+                <p data-lang-en>
+                    The radius r₀ represents the effective size of the "hole" that the T particle generates in the I field. 
+                    It is determined by the repulsion intensity k<sub>T</sub>, the mass of I particles, 
+                    and the propagation speed c in the medium.
+                </p>
+
+                <!-- Visualización del Perfil de Densidad -->
+                <h3>
+                    <span data-lang-es>Visualización</span>
+                    <span data-lang-en>Visualization</span>
+                </h3>
+
+                <p data-lang-es>
+                    El siguiente gráfico muestra la distribución de densidad del campo I alrededor de una partícula T. 
+                    Las regiones oscuras indican baja densidad (el "hueco"), mientras que las regiones doradas 
+                    indican alta densidad (aproximándose a ρ₀).
+                </p>
+                <p data-lang-en>
+                    The following graph shows the I field density distribution around a T particle. 
+                    Dark regions indicate low density (the "hole"), while golden regions 
+                    indicate high density (approaching ρ₀).
+                </p>
+
+                <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                    <svg viewBox="0 0 500 420" style="max-width: 600px; width: 100%; height: auto;">
+                        <defs>
+                            <!-- Gradiente radial mejorado basado en ρ(r) = ρ₀·e^(-r₀/r) -->
+                            <radialGradient id="densityGradient" cx="50%" cy="47.6%" r="43%">
+                                <!-- Centro: ρ ≈ 0 (negro profundo) - el hueco -->
+                                <stop offset="0%" stop-color="#000000"/>
+                                <stop offset="3%" stop-color="#020204"/>
+                                <stop offset="6%" stop-color="#080810"/>
+                                <!-- r = r₀: ρ ≈ 0.368ρ₀ -->
+                                <stop offset="10%" stop-color="#1a1815"/>
+                                <stop offset="15%" stop-color="#2d2820"/>
+                                <!-- r = 2r₀: ρ ≈ 0.607ρ₀ -->
+                                <stop offset="22%" stop-color="#4a4030"/>
+                                <stop offset="30%" stop-color="#6a5535"/>
+                                <!-- r = 3r₀: ρ ≈ 0.717ρ₀ -->
+                                <stop offset="40%" stop-color="#8a6a38"/>
+                                <!-- r = 5r₀: ρ ≈ 0.819ρ₀ -->
+                                <stop offset="55%" stop-color="#a5801f"/>
+                                <!-- r → ∞: ρ → ρ₀ -->
+                                <stop offset="75%" stop-color="#b89020"/>
+                                <stop offset="100%" stop-color="#c9a227"/>
+                            </radialGradient>
+                            
+                            <!-- Marcador de flecha -->
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#e8e6e3"/>
+                            </marker>
+
+                            <!-- Gradiente para leyenda -->
+                            <linearGradient id="legendGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#000000"/>
+                                <stop offset="25%" stop-color="#2d2820"/>
+                                <stop offset="50%" stop-color="#6a5535"/>
+                                <stop offset="75%" stop-color="#a5801f"/>
+                                <stop offset="100%" stop-color="#c9a227"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Fondo -->
+                        <rect width="500" height="420" fill="#0a0a0f"/>
+                        
+                        <!-- Campo de densidad -->
+                        <ellipse cx="250" cy="200" rx="175" ry="175" fill="url(#densityGradient)"/>
+                        
+                        <!-- Círculos de referencia con mejor visibilidad -->
+                        <circle cx="250" cy="200" r="17.5" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.7"/>
+                        <circle cx="250" cy="200" r="35" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6,4" opacity="0.5"/>
+                        <circle cx="250" cy="200" r="87.5" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="6,4" opacity="0.35"/>
+                        
+                        <!-- Partícula T en el centro -->
+                        <circle cx="250" cy="200" r="8" fill="#ffffff"/>
+                        <text x="250" y="204" text-anchor="middle" fill="#0a0a0f" font-family="Arial, sans-serif" font-size="11" font-weight="bold">T</text>
+                        
+                        <!-- Etiquetas de radio con fondo para legibilidad -->
+                        <rect x="232" y="168" width="36" height="14" rx="2" fill="#0a0a0f" opacity="0.8"/>
+                        <text x="250" y="179" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="12" font-weight="bold">r₀</text>
+                        
+                        <rect x="228" y="148" width="44" height="14" rx="2" fill="#0a0a0f" opacity="0.8"/>
+                        <text x="250" y="159" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="12" font-weight="bold">2r₀</text>
+                        
+                        <rect x="228" y="98" width="44" height="14" rx="2" fill="#0a0a0f" opacity="0.8"/>
+                        <text x="250" y="109" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="12" font-weight="bold">5r₀</text>
+                        
+                        <!-- Eje r con flecha -->
+                        <line x1="258" y1="200" x2="435" y2="200" stroke="#e8e6e3" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="448" y="205" fill="#e8e6e3" font-family="monospace" font-size="14" font-weight="bold">r</text>
+                        
+                        <!-- Etiquetas de densidad -->
+                        <rect x="222" y="215" width="56" height="16" rx="2" fill="#0a0a0f" opacity="0.85"/>
+                        <text x="250" y="228" text-anchor="middle" fill="#888888" font-family="Arial, sans-serif" font-size="12">ρ ≈ 0</text>
+                        
+                        <rect x="350" y="215" width="56" height="16" rx="2" fill="#0a0a0f" opacity="0.85"/>
+                        <text x="378" y="228" text-anchor="middle" fill="#c9a227" font-family="Arial, sans-serif" font-size="12">ρ → ρ₀</text>
+                        
+                        <!-- Título -->
+                        <text x="250" y="32" text-anchor="middle" fill="#e8e6e3" font-family="Georgia, serif" font-size="18" font-weight="bold" data-lang-es>Densidad del Campo I alrededor de T</text>
+                        <text x="250" y="32" text-anchor="middle" fill="#e8e6e3" font-family="Georgia, serif" font-size="18" font-weight="bold" data-lang-en>I Field Density around T</text>
+                        
+                        <!-- Ecuación con fondo -->
+                        <rect x="155" y="388" width="190" height="24" rx="4" fill="#1a1a25"/>
+                        <text x="250" y="405" text-anchor="middle" fill="#c9a227" font-family="monospace" font-size="14" font-weight="bold">ρ(r) = ρ₀ · e^(−r₀/r)</text>
+                        
+                        <!-- Leyenda de colores -->
+                        <text x="90" y="360" text-anchor="middle" fill="#e8e6e3" font-family="Arial, sans-serif" font-size="11" data-lang-es>Densidad</text>
+                        <text x="90" y="360" text-anchor="middle" fill="#e8e6e3" font-family="Arial, sans-serif" font-size="11" data-lang-en>Density</text>
+                        <rect x="30" y="368" width="120" height="12" rx="3" fill="url(#legendGradient)" stroke="#333" stroke-width="1"/>
+                        <text x="30" y="395" fill="#888888" font-family="Arial, sans-serif" font-size="11">0</text>
+                        <text x="142" y="395" fill="#c9a227" font-family="Arial, sans-serif" font-size="11">ρ₀</text>
+                    </svg>
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>El perfil de densidad emerge matemáticamente de las hipótesis fundamentales. No es un postulado adicional.</span>
+                    <span data-lang-en>The density profile emerges mathematically from the fundamental hypotheses. It is not an additional postulate.</span>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- E = mc² -->
+            <section id="energia">
+                <span class="section-number">04</span>
+                <h2>
+                    <span data-lang-es>Derivación de E = mc²</span>
+                    <span data-lang-en>Derivation of E = mc²</span>
+                </h2>
+                
+                <p data-lang-es>
+                    La materia es un hueco de volumen V en el medio I. Crear este hueco requiere trabajo 
+                    contra la presión del medio. Para un medio elástico donde las perturbaciones viajan a velocidad c, 
+                    la relación presión-densidad implica P = ρ₀c². La masa del hueco es proporcional al volumen desplazado.
+                </p>
+                <p data-lang-en>
+                    Matter is a hole of volume V in the I medium. Creating this hole requires work 
+                    against the medium's pressure. For an elastic medium where perturbations travel at speed c, 
+                    the pressure-density relation implies P = ρ₀c². The hole's mass is proportional to the displaced volume.
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Resultado</span>
+                        <span data-lang-en>Result</span>
+                    </span>
+                    $$E = mc^2$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>La equivalencia masa-energía emerge directamente de las propiedades del medio I.</span>
+                    <span data-lang-en>Mass-energy equivalence emerges directly from the I medium properties.</span>
+                </div>
+
+                <div class="analogy">
+                    <p class="analogy-label">
+                        <span data-lang-es>💡 Analogía</span>
+                        <span data-lang-en>💡 Analogy</span>
+                    </p>
+                    <p data-lang-es>
+                        Es como preguntar cuánta energía tiene una burbuja en agua. Depende del volumen de la burbuja 
+                        y de las propiedades del agua. En TCI, las "propiedades del agua" dan c², y el "volumen efectivo" da m.
+                    </p>
+                    <p data-lang-en>
+                        It's like asking how much energy a bubble in water has. It depends on the bubble's volume 
+                        and the water's properties. In IFT, the "water properties" give c², and the "effective volume" gives m.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Inercia -->
+            <section id="inercia">
+                <span class="section-number">05</span>
+                <h2>
+                    <span data-lang-es>Justificación de la Inercia</span>
+                    <span data-lang-en>Justification of Inertia</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Newton describió la inercia como F = ma, pero nunca explicó por qué existe resistencia al cambio de movimiento. 
+                    En TCI, la inercia tiene una explicación mecánica concreta: cuando un hueco acelera, el campo I circundante 
+                    debe reorganizarse. Esta reorganización no es instantánea — las perturbaciones viajan a velocidad c. 
+                    La resistencia que el medio opone a la reorganización es la inercia.
+                </p>
+                <p data-lang-en>
+                    Newton described inertia as F = ma, but never explained why resistance to motion change exists. 
+                    In IFT, inertia has a concrete mechanical explanation: when a hole accelerates, the surrounding I field 
+                    must reorganize. This reorganization is not instantaneous — perturbations travel at speed c. 
+                    The resistance the medium opposes to reorganization is inertia.
+                </p>
+
+                <div class="analogy">
+                    <p class="analogy-label">
+                        <span data-lang-es>💡 Analogía</span>
+                        <span data-lang-en>💡 Analogy</span>
+                    </p>
+                    <p data-lang-es>
+                        Pensá en mover una esfera a través de agua. Si la movés lento y constante, el agua fluye 
+                        suavemente alrededor. Pero si intentás acelerarla bruscamente, sentís resistencia. 
+                        En hidrodinámica esto se llama "masa añadida". En TCI, <strong>toda</strong> la masa es masa añadida.
+                    </p>
+                    <p data-lang-en>
+                        Think of moving a sphere through water. If you move it slowly and steadily, water flows 
+                        smoothly around it. But if you try to accelerate it suddenly, you feel resistance. 
+                        In hydrodynamics this is called "added mass". In IFT, <strong>all</strong> mass is added mass.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Masa Relativista -->
+            <section id="masa-relativista">
+                <span class="section-number">06</span>
+                <h2>
+                    <span data-lang-es>Masa Relativista</span>
+                    <span data-lang-en>Relativistic Mass</span>
+                </h2>
+                
+                <p data-lang-es>
+                    A velocidades cercanas a c, el hueco se contrae en la dirección del movimiento. 
+                    El campo I no puede reorganizarse más rápido que c. A medida que v → c, 
+                    la capacidad del medio para reacomodarse disminuye y la resistencia aumenta.
+                </p>
+                <p data-lang-en>
+                    At speeds close to c, the hole contracts in the direction of motion. 
+                    The I field cannot reorganize faster than c. As v → c, 
+                    the medium's ability to rearrange decreases and resistance increases.
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Masa relativista</span>
+                        <span data-lang-en>Relativistic mass</span>
+                    </span>
+                    $$m(v) = \gamma m_0 = \frac{m_0}{\sqrt{1 - v^2/c^2}}$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>La velocidad c es inalcanzable porque es la velocidad de respuesta del medio. A v = c, la resistencia se vuelve infinita.</span>
+                    <span data-lang-en>Speed c is unreachable because it is the medium's response speed. At v = c, resistance becomes infinite.</span>
+                </div>
+            </section>
+
+            <!-- Dilatación Temporal -->
+            <section id="dilatacion">
+                <span class="section-number">07</span>
+                <h2>
+                    <span data-lang-es>Dilatación Temporal</span>
+                    <span data-lang-en>Time Dilation</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Los satélites GPS experimentan dilatación temporal medible. TCI predice ambos efectos desde primeros principios:
+                </p>
+                <p data-lang-en>
+                    GPS satellites experience measurable time dilation. IFT predicts both effects from first principles:
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Efecto neto</span>
+                        <span data-lang-en>Net effect</span>
+                    </span>
+                    $$\Delta t_{total} = +38.5 \text{ μs/día | μs/day}$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>Coincide exactamente con las correcciones aplicadas a los relojes GPS.</span>
+                    <span data-lang-en>Matches exactly the corrections applied to GPS clocks.</span>
+                </div>
+
+                <p data-lang-es>
+                    La densidad del campo I determina <em>todas</em> las propiedades físicas locales. 
+                    Gravedad y velocidad son dos formas de modificar esa densidad efectiva.
+                </p>
+                <p data-lang-en>
+                    The I field density determines <em>all</em> local physical properties. 
+                    Gravity and velocity are two ways of modifying that effective density.
+                </p>
+            </section>
+
+            <!-- Deflexión de Luz -->
+            <section id="deflexion">
+                <span class="section-number">08</span>
+                <h2>
+                    <span data-lang-es>Deflexión de la Luz</span>
+                    <span data-lang-en>Light Deflection</span>
+                </h2>
+                
+                <p data-lang-es>
+                    La luz es una perturbación que viaja a través del campo I. Cerca de una masa, 
+                    hay un gradiente de densidad. El frente de onda se inclina. La luz se curva.
+                </p>
+                <p data-lang-en>
+                    Light is a perturbation traveling through the I field. Near a mass, 
+                    there is a density gradient. The wave front tilts. Light curves.
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Deflexión total</span>
+                        <span data-lang-en>Total deflection</span>
+                    </span>
+                    $$\theta_{total} = \frac{4GM}{c^2 R} = 1.75''$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>TCI predice el factor 2 correcto, verificado desde el eclipse de 1919.</span>
+                    <span data-lang-en>IFT predicts the correct factor of 2, verified since the 1919 eclipse.</span>
+                </div>
+            </section>
+
+            <!-- Curvas de Rotación -->
+            <section id="curvas-rotacion">
+                <span class="section-number">09</span>
+                <h2>
+                    <span data-lang-es>Curvas de Rotación Planas</span>
+                    <span data-lang-en>Flat Rotation Curves</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Las estrellas en las afueras de las galaxias mantienen velocidad aproximadamente constante, 
+                    en lugar de disminuir como v ∝ 1/√r. TCI dice: no falta masa. Lo que cambia es la inercia.
+                </p>
+                <p data-lang-en>
+                    Stars in the outskirts of galaxies maintain approximately constant velocity, 
+                    instead of decreasing as v ∝ 1/√r. IFT says: mass is not missing. What changes is inertia.
+                </p>
+
+                <p data-lang-es>
+                    La rotación de la materia galáctica arrastra al campo I, creando un vórtice 
+                    que modifica la inercia efectiva de las estrellas.
+                </p>
+                <p data-lang-en>
+                    The rotation of galactic matter drags the I field, creating a vortex 
+                    that modifies the effective inertia of stars.
+                </p>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Transición entre regímenes</span>
+                        <span data-lang-en>Transition between regimes</span>
+                    </span>
+                    $$v(r) = \begin{cases} 
+                    \sqrt{GM/r} & \text{(centro / center)} \\
+                    (GMa_0)^{1/4} & \text{(afuera / outside)}
+                    \end{cases}$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>No hay materia oscura. Hay un campo I que rota.</span>
+                    <span data-lang-en>There is no dark matter. There is a rotating I field.</span>
+                </div>
+            </section>
+
+            <!-- Tully-Fisher -->
+            <section id="tully-fisher">
+                <span class="section-number">10</span>
+                <h2>
+                    <span data-lang-es>Relación Tully-Fisher</span>
+                    <span data-lang-en>Tully-Fisher Relation</span>
+                </h2>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Relación observada</span>
+                        <span data-lang-en>Observed relation</span>
+                    </span>
+                    $$M \propto v^4 \quad \Leftrightarrow \quad v^4 = GMa_0$$
+                </div>
+
+                <p data-lang-es>
+                    El exponente 4 emerge de combinar gravedad (v²) con modificación por vórtice (v²). 
+                    v² × v² = v⁴. Simple.
+                </p>
+                <p data-lang-en>
+                    The exponent 4 emerges from combining gravity (v²) with vortex modification (v²). 
+                    v² × v² = v⁴. Simple.
+                </p>
+
+                <div class="key-result">
+                    <span data-lang-es>El exponente 4 no es misterioso — es la firma de dos mecanismos actuando juntos.</span>
+                    <span data-lang-en>The exponent 4 is not mysterious — it's the signature of two mechanisms acting together.</span>
+                </div>
+            </section>
+
+            <!-- Constante a₀ -->
+            <section id="constante-a0">
+                <span class="section-number">11</span>
+                <h2>
+                    <span data-lang-es>Emergencia de la Constante a₀</span>
+                    <span data-lang-en>Emergence of Constant a₀</span>
+                </h2>
+
+                <div class="equation">
+                    <span class="equation-label">
+                        <span data-lang-es>Relación fundamental</span>
+                        <span data-lang-en>Fundamental relation</span>
+                    </span>
+                    $$a_0 = c \sqrt{G \rho_0}$$
+                </div>
+
+                <p data-lang-es>
+                    En 1983, Milgrom introdujo a₀ pero no pudo explicar qué es. 
+                    TCI responde: a₀ = c√(Gρ₀). Es la única combinación dimensional posible.
+                </p>
+                <p data-lang-en>
+                    In 1983, Milgrom introduced a₀ but couldn't explain what it is. 
+                    IFT answers: a₀ = c√(Gρ₀). It's the only possible dimensional combination.
+                </p>
+            </section>
+
+            <!-- Energía del Vacío -->
+            <section id="energia-vacio">
+                <span class="section-number">12</span>
+                <h2>
+                    <span data-lang-es>Energía del Vacío</span>
+                    <span data-lang-en>Vacuum Energy</span>
+                </h2>
+
+                <div class="equation">
+                    $$\rho_{vacuum} = \rho_0 c^2 = 2.16 \times 10^{-10} \text{ J/m}^3$$
+                </div>
+
+                <div class="comparison">
+                    <div class="comparison-item highlight-good">
+                        <div class="comparison-title">TCI / IFT</div>
+                        <p data-lang-es>Predice: 2.16 × 10⁻¹⁰ J/m³<br>Error: factor 2.6</p>
+                        <p data-lang-en>Predicts: 2.16 × 10⁻¹⁰ J/m³<br>Error: factor 2.6</p>
+                    </div>
+                    <div class="comparison-item highlight-bad">
+                        <div class="comparison-title">QFT</div>
+                        <p data-lang-es>Predice: ~10¹¹⁰ J/m³<br>Error: factor 10¹²⁰</p>
+                        <p data-lang-en>Predicts: ~10¹¹⁰ J/m³<br>Error: factor 10¹²⁰</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Coincidencia Cósmica -->
+            <section id="coincidencia">
+                <span class="section-number">13</span>
+                <h2>
+                    <span data-lang-es>Coincidencia Cósmica: a₀ ≈ cH₀</span>
+                    <span data-lang-en>Cosmic Coincidence: a₀ ≈ cH₀</span>
+                </h2>
+                
+                <p data-lang-es>
+                    ¿Por qué una constante galáctica (a₀) tiene casi el mismo valor que una cosmológica (cH₀)?
+                    No es coincidencia. Ambas emergen de ρ₀:
+                </p>
+                <p data-lang-en>
+                    Why does a galactic constant (a₀) have almost the same value as a cosmological one (cH₀)?
+                    It's not a coincidence. Both emerge from ρ₀:
+                </p>
+
+                <div class="equation">
+                    $$a_0 = c \sqrt{G \rho_0} \qquad H_0 \propto \sqrt{G \rho_0}$$
+                </div>
+
+                <div class="analogy">
+                    <p class="analogy-label">
+                        <span data-lang-es>💡 Analogía</span>
+                        <span data-lang-en>💡 Analogy</span>
+                    </p>
+                    <p data-lang-es>
+                        Imaginá que afinás una guitarra y un piano con el mismo diapasón.
+                        "¿Por qué el La de la guitarra tiene la misma frecuencia que el La del piano?"
+                        No es coincidencia. <strong>ρ₀ es el diapasón del universo.</strong>
+                    </p>
+                    <p data-lang-en>
+                        Imagine tuning a guitar and a piano with the same tuning fork.
+                        "Why does the A on the guitar have the same frequency as the A on the piano?"
+                        It's not a coincidence. <strong>ρ₀ is the universe's tuning fork.</strong>
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- PUENTE CONCEPTUAL -->
+            <!-- ========================================== -->
+
+            <section id="puente">
+                <div class="part-divider">
+                    <div class="part-divider-label">
+                        <span data-lang-es>Transición</span>
+                        <span data-lang-en>Transition</span>
+                    </div>
+                    <div class="part-divider-title">
+                        <span data-lang-es>De TCI a TCI-P</span>
+                        <span data-lang-en>From IFT to IFT-P</span>
+                    </div>
+                    <div class="part-divider-subtitle">
+                        <span data-lang-es>Conectando escalas macroscópicas y cuánticas</span>
+                        <span data-lang-en>Connecting macroscopic and quantum scales</span>
+                    </div>
+                </div>
+
+                <div class="bridge-section">
+                    <div class="bridge-title">
+                        <span data-lang-es>Puente Conceptual</span>
+                        <span data-lang-en>Conceptual Bridge</span>
+                    </div>
+                    <h3 data-lang-es>El problema de las escalas</h3>
+                    <h3 data-lang-en>The scale problem</h3>
+                    <p data-lang-es>
+                        TCI describe fenómenos macroscópicos tratando la materia como "huecos" genéricos (T) en el campo I. 
+                        Pero para entender fenómenos cuánticos, necesitamos mirar dentro del hueco.
+                        TCI-P abre esa caja: revela que los huecos están compuestos por partículas fundamentales 
+                        con propiedades específicas.
+                    </p>
+                    <p data-lang-en>
+                        IFT describes macroscopic phenomena treating matter as generic "holes" (T) in the I field. 
+                        But to understand quantum phenomena, we need to look inside the hole.
+                        IFT-P opens that box: it reveals that holes are composed of fundamental particles 
+                        with specific properties.
+                    </p>
+                </div>
+
+                <h3 data-lang-es>Refinamiento de la notación</h3>
+                <h3 data-lang-en>Notation refinement</h3>
+                
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-lang-es>Nivel</th>
+                                <th data-lang-en>Level</th>
+                                <th data-lang-es>Notación</th>
+                                <th data-lang-en>Notation</th>
+                                <th data-lang-es>Significado</th>
+                                <th data-lang-en>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-es><strong>TCI (macro)</strong></td>
+                                <td data-lang-en><strong>IFT (macro)</strong></td>
+                                <td>T</td>
+                                <td data-lang-es>Cualquier estructura que desplaza campo I</td>
+                                <td data-lang-en>Any structure that displaces I field</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es><strong>TCI-P (micro)</strong></td>
+                                <td data-lang-en><strong>IFT-P (micro)</strong></td>
+                                <td>T<sub>núcleo</sub></td>
+                                <td data-lang-es>Partícula fundamental del núcleo</td>
+                                <td data-lang-en>Fundamental nucleus particle</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es><strong>TCI-P (micro)</strong></td>
+                                <td data-lang-en><strong>IFT-P (micro)</strong></td>
+                                <td>E<sup>−</sup>, E<sup>+</sup></td>
+                                <td data-lang-es>Partículas eléctricas</td>
+                                <td data-lang-en>Electric particles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- PARTE II: TCI-P -->
+            <!-- ========================================== -->
+
+            <section id="tcip-intro">
+                <div class="part-divider">
+                    <div class="part-divider-label">
+                        <span data-lang-es>Parte II</span>
+                        <span data-lang-en>Part II</span>
+                    </div>
+                    <div class="part-divider-title">
+                        <span data-lang-es>TCI-P: Física de Partículas</span>
+                        <span data-lang-en>IFT-P: Particle Physics</span>
+                    </div>
+                    <div class="part-divider-subtitle">
+                        <span data-lang-es>Extensión al dominio cuántico</span>
+                        <span data-lang-en>Extension to the quantum domain</span>
+                    </div>
+                </div>
+
+                <p data-lang-es>
+                    TCI-P extiende la Teoría del Campo Intangible hacia la física de partículas. 
+                    El objetivo es mostrar cómo los fenómenos cuánticos — cuantización, dualidad onda-partícula, 
+                    estabilidad atómica — emergen del mismo sustrato físico.
+                </p>
+                <p data-lang-en>
+                    IFT-P extends the Intangible Field Theory to particle physics. 
+                    The goal is to show how quantum phenomena — quantization, wave-particle duality, 
+                    atomic stability — emerge from the same physical substrate.
+                </p>
+
+                <div class="highlight tci-p">
+                    <div class="highlight-title tci-p">
+                        <span data-lang-es>Principio Unificador</span>
+                        <span data-lang-en>Unifying Principle</span>
+                    </div>
+                    <p style="margin-bottom: 0;" data-lang-es>
+                        La cuantización no es un postulado axiomático. Emerge de la autoconsistencia geométrica: 
+                        solo las configuraciones donde las ondas cierran en fase son estables.
+                    </p>
+                    <p style="margin-bottom: 0;" data-lang-en>
+                        Quantization is not an axiomatic postulate. It emerges from geometric self-consistency: 
+                        only configurations where waves close in phase are stable.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Partículas Fundamentales -->
+            <section id="particulas">
+                <span class="section-number tci-p">P.01</span>
+                <h2>
+                    <span data-lang-es>Partículas Fundamentales</span>
+                    <span data-lang-en>Fundamental Particles</span>
+                </h2>
+                
+                <p data-lang-es>TCI-P propone tres tipos de partículas fundamentales:</p>
+                <p data-lang-en>IFT-P proposes three types of fundamental particles:</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="tci-p" data-lang-es>Partícula</th>
+                                <th class="tci-p" data-lang-en>Particle</th>
+                                <th class="tci-p" data-lang-es>Símbolo</th>
+                                <th class="tci-p" data-lang-en>Symbol</th>
+                                <th class="tci-p" data-lang-es>Descripción</th>
+                                <th class="tci-p" data-lang-en>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-es><strong>Intangible</strong></td>
+                                <td data-lang-en><strong>Intangible</strong></td>
+                                <td>I</td>
+                                <td data-lang-es>Constituye el vacío. Ubicua. Se repelen entre sí.</td>
+                                <td data-lang-en>Constitutes vacuum. Ubiquitous. They repel each other.</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es><strong>Tangible</strong></td>
+                                <td data-lang-en><strong>Tangible</strong></td>
+                                <td>T<sub>núcleo</sub></td>
+                                <td data-lang-es>Constituye el núcleo. Se atraen entre sí.</td>
+                                <td data-lang-en>Constitutes nucleus. They attract each other.</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es><strong>Eléctrica</strong></td>
+                                <td data-lang-en><strong>Electric</strong></td>
+                                <td>E<sup>−</sup>, E<sup>+</sup></td>
+                                <td data-lang-es>Dos variedades con comportamiento opuesto.</td>
+                                <td data-lang-en>Two varieties with opposite behavior.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reglas de Interacción -->
+            <section id="interacciones">
+                <span class="section-number tci-p">P.02</span>
+                <h2>
+                    <span data-lang-es>Reglas de Interacción</span>
+                    <span data-lang-en>Interaction Rules</span>
+                </h2>
+                
+                <p data-lang-es>Las interacciones entre partículas se resumen en esta matriz:</p>
+                <p data-lang-en>Particle interactions are summarized in this matrix:</p>
+
+                <div class="table-wrapper">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th class="tci-p"></th>
+                                <th class="tci-p">I</th>
+                                <th class="tci-p">T</th>
+                                <th class="tci-p">E<sup>−</sup></th>
+                                <th class="tci-p">E<sup>+</sup></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>I</strong></td>
+                                <td class="repulsion">R</td>
+                                <td class="repulsion">R</td>
+                                <td class="repulsion">R</td>
+                                <td class="repulsion">R</td>
+                            </tr>
+                            <tr>
+                                <td><strong>T</strong></td>
+                                <td class="repulsion">R</td>
+                                <td class="attraction">A</td>
+                                <td class="attraction">A</td>
+                                <td class="attraction">A</td>
+                            </tr>
+                            <tr>
+                                <td><strong>E<sup>−</sup></strong></td>
+                                <td class="repulsion">R</td>
+                                <td class="attraction">A</td>
+                                <td class="repulsion">R</td>
+                                <td class="attraction">A</td>
+                            </tr>
+                            <tr>
+                                <td><strong>E<sup>+</sup></strong></td>
+                                <td class="repulsion">R</td>
+                                <td class="attraction">A</td>
+                                <td class="attraction">A</td>
+                                <td class="repulsion">R</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                    <span class="repulsion">R</span> = 
+                    <span data-lang-es>Repulsión</span>
+                    <span data-lang-en>Repulsion</span>
+                    &nbsp;&nbsp;&nbsp; 
+                    <span class="attraction">A</span> = 
+                    <span data-lang-es>Atracción</span>
+                    <span data-lang-en>Attraction</span>
+                </p>
+            </section>
+
+            <!-- Masa Intrínseca vs Emergente -->
+            <section id="masa-intrinseca">
+                <span class="section-number tci-p">P.03</span>
+                <h2>
+                    <span data-lang-es>Masa Intrínseca vs Emergente</span>
+                    <span data-lang-en>Intrinsic vs Emergent Mass</span>
+                </h2>
+
+                <div class="comparison">
+                    <div class="comparison-item highlight-tcip">
+                        <div class="comparison-title">
+                            <span data-lang-es>Partículas E (electrón, positrón)</span>
+                            <span data-lang-en>E Particles (electron, positron)</span>
+                        </div>
+                        <p data-lang-es><strong>Masa intrínseca</strong><br>
+                            E tiene masa propia, pequeña pero real. Esta masa le permite 
+                            interactuar mecánicamente con el campo I.
+                        </p>
+                        <p data-lang-en><strong>Intrinsic mass</strong><br>
+                            E has its own mass, small but real. This mass allows it to 
+                            interact mechanically with the I field.
+                        </p>
+                    </div>
+                    <div class="comparison-item highlight-tci">
+                        <div class="comparison-title">
+                            <span data-lang-es>Partículas T (núcleo)</span>
+                            <span data-lang-en>T Particles (nucleus)</span>
+                        </div>
+                        <p data-lang-es><strong>Masa emergente</strong><br>
+                            T genera su masa al repeler el campo I, creando un "hueco". 
+                            La energía de ese hueco se manifiesta como masa.
+                        </p>
+                        <p data-lang-en><strong>Emergent mass</strong><br>
+                            T generates its mass by repelling the I field, creating a "hole". 
+                            That hole's energy manifests as mass.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>E tiene masa intrínseca (necesaria para interactuar con I). T tiene masa emergente (del hueco que genera). Esta distinción resuelve la asimetría electrón/núcleo.</span>
+                    <span data-lang-en>E has intrinsic mass (needed to interact with I). T has emergent mass (from the hole it generates). This distinction resolves the electron/nucleus asymmetry.</span>
+                </div>
+            </section>
+
+            <!-- Estructuras Emergentes -->
+            <section id="estructuras">
+                <span class="section-number tci-p">P.04</span>
+                <h2>
+                    <span data-lang-es>Estructuras Emergentes</span>
+                    <span data-lang-en>Emergent Structures</span>
+                </h2>
+                
+                <h3 data-lang-es>El fotón</h3>
+                <h3 data-lang-en>The photon</h3>
+                <p data-lang-es>
+                    El fotón es una <strong>onda pura</strong> propagándose en el mar I, 
+                    sin partícula T ni E asociada. Esto explica naturalmente:
+                    carece de masa (no hay T), carece de carga (no hay E), viaja a velocidad c.
+                </p>
+                <p data-lang-en>
+                    The photon is a <strong>pure wave</strong> propagating in the I sea, 
+                    with no associated T or E particle. This naturally explains:
+                    no mass (no T), no charge (no E), travels at speed c.
+                </p>
+            </section>
+
+            <!-- Mecanismo de Ondulación -->
+            <section id="ondulacion">
+                <span class="section-number tci-p">P.05</span>
+                <h2>
+                    <span data-lang-es>Mecanismo de Ondulación</span>
+                    <span data-lang-en>Wave Mechanism</span>
+                </h2>
+                
+                <p data-lang-es>Cuando una partícula E⁻ se mueve a través del mar I:</p>
+                <p data-lang-en>When an E⁻ particle moves through the I sea:</p>
+
+                <ol>
+                    <li data-lang-es>E⁻ repele las partículas I que encuentra en su trayectoria</li>
+                    <li data-lang-en>E⁻ repels the I particles it encounters in its path</li>
+                    <li data-lang-es>Las partículas I desplazadas perturban a sus vecinas</li>
+                    <li data-lang-en>Displaced I particles perturb their neighbors</li>
+                    <li data-lang-es>Se propaga una onda en el mar I</li>
+                    <li data-lang-en>A wave propagates through the I sea</li>
+                </ol>
+
+                <div class="equation tci-p">
+                    <span class="equation-label tci-p">
+                        <span data-lang-es>Frecuencia orbital</span>
+                        <span data-lang-en>Orbital frequency</span>
+                    </span>
+                    $$f = \frac{v}{2\pi r}$$
+                </div>
+
+                <p data-lang-es>
+                    Este mecanismo proporciona una base física concreta para la "función de onda": 
+                    no es una entidad abstracta probabilística, sino una perturbación real en el mar I.
+                </p>
+                <p data-lang-en>
+                    This mechanism provides a concrete physical basis for the "wave function": 
+                    it's not an abstract probabilistic entity, but a real perturbation in the I sea.
+                </p>
+            </section>
+
+            <!-- Cuantización de Órbitas -->
+            <section id="cuantizacion">
+                <span class="section-number tci-p">P.06</span>
+                <h2>
+                    <span data-lang-es>Cuantización de Órbitas</span>
+                    <span data-lang-en>Orbit Quantization</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Una órbita es estable únicamente si la onda generada por E⁻ 
+                    vuelve en fase después de completar una vuelta.
+                </p>
+                <p data-lang-en>
+                    An orbit is stable only if the wave generated by E⁻ 
+                    returns in phase after completing one revolution.
+                </p>
+
+                <div class="equation tci-p">
+                    <span class="equation-label tci-p">
+                        <span data-lang-es>Condición de autoconsistencia</span>
+                        <span data-lang-en>Self-consistency condition</span>
+                    </span>
+                    $$2\pi r = n\lambda$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>La cuantización emerge de la geometría y la autoconsistencia ondular, no de un postulado ad hoc.</span>
+                    <span data-lang-en>Quantization emerges from geometry and wave self-consistency, not from an ad hoc postulate.</span>
+                </div>
+            </section>
+
+            <!-- Estabilidad Atómica -->
+            <section id="estabilidad">
+                <span class="section-number tci-p">P.07</span>
+                <h2>
+                    <span data-lang-es>Estabilidad Atómica</span>
+                    <span data-lang-en>Atomic Stability</span>
+                </h2>
+                
+                <p data-lang-es>
+                    En física clásica, una carga acelerada emite radiación continuamente. 
+                    Un electrón en órbita debería caer hacia el núcleo. Pero los átomos son estables.
+                </p>
+                <p data-lang-en>
+                    In classical physics, an accelerated charge emits radiation continuously. 
+                    An orbiting electron should fall toward the nucleus. But atoms are stable.
+                </p>
+
+                <p data-lang-es>
+                    <strong>Solución TCI-P:</strong> En órbita estable, la onda cierra en fase formando una onda estacionaria — 
+                    la perturbación no escapa. Solo durante transiciones la onda se propaga hacia afuera (el fotón).
+                </p>
+                <p data-lang-en>
+                    <strong>IFT-P Solution:</strong> In stable orbit, the wave closes in phase forming a standing wave — 
+                    the perturbation doesn't escape. Only during transitions does the wave propagate outward (the photon).
+                </p>
+            </section>
+
+            <!-- Mecánica de Transición -->
+            <section id="transicion">
+                <span class="section-number tci-p">P.08</span>
+                <h2>
+                    <span data-lang-es>Mecánica de la Transición Atómica</span>
+                    <span data-lang-en>Atomic Transition Mechanics</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Contrario a la imagen del "salto cuántico" instantáneo, en TCI-P la transición 
+                    es un proceso mecánico con duración finita. El electrón desciende en espiral.
+                </p>
+                <p data-lang-en>
+                    Contrary to the image of an instantaneous "quantum jump", in IFT-P the transition 
+                    is a mechanical process with finite duration. The electron descends in a spiral.
+                </p>
+
+                <div class="equation tci-p">
+                    <span class="equation-label tci-p">
+                        <span data-lang-es>Órbitas durante la caída</span>
+                        <span data-lang-en>Orbits during descent</span>
+                    </span>
+                    $$N_{orbits} \approx 1.3 \times 10^6$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>El electrón da más de un millón de vueltas mientras desciende de una órbita a otra.</span>
+                    <span data-lang-en>The electron completes over one million revolutions while descending from one orbit to another.</span>
+                </div>
+
+                <div class="equation tci-p">
+                    <span class="equation-label tci-p">
+                        <span data-lang-es>Ley de escala verificada</span>
+                        <span data-lang-en>Verified scaling law</span>
+                    </span>
+                    $$\tau \propto n^{2.85}$$
+                </div>
+
+                <p data-lang-es>
+                    Los tiempos de vida predichos coinciden con datos experimentales con error menor al 5%.
+                </p>
+                <p data-lang-en>
+                    Predicted lifetimes match experimental data with less than 5% error.
+                </p>
+            </section>
+
+            <!-- Efecto Fotoeléctrico -->
+            <section id="fotoelectrico">
+                <span class="section-number tci-p">P.09</span>
+                <h2>
+                    <span data-lang-es>Efecto Fotoeléctrico</span>
+                    <span data-lang-en>Photoelectric Effect</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Un fotón de frecuencia f incide sobre un átomo. Si f = f₀ (frecuencia orbital), 
+                    se produce interferencia destructiva con la onda orbital. La órbita se "borra" y E⁻ queda libre.
+                </p>
+                <p data-lang-en>
+                    A photon of frequency f strikes an atom. If f = f₀ (orbital frequency), 
+                    destructive interference occurs with the orbital wave. The orbit is "erased" and E⁻ becomes free.
+                </p>
+
+                <div class="equation tci-p">
+                    $$E = h\nu$$
+                </div>
+
+                <div class="key-result">
+                    <span data-lang-es>La relación E = hν emerge de la resonancia entre ondas, sin postular cuantos como entidades fundamentales.</span>
+                    <span data-lang-en>The relation E = hν emerges from wave resonance, without postulating quanta as fundamental entities.</span>
+                </div>
+            </section>
+
+            <!-- Doble Rendija -->
+            <section id="doble-rendija">
+                <span class="section-number tci-p">P.10</span>
+                <h2>
+                    <span data-lang-es>El Experimento de Doble Rendija</span>
+                    <span data-lang-en>The Double Slit Experiment</span>
+                </h2>
+                
+                <p data-lang-es>
+                    E⁻ viaja hacia las rendijas (es una partícula real). La onda en el mar I pasa por ambas rendijas 
+                    y genera interferencia. E⁻ pasa por una sola rendija, pero su trayectoria es guiada por el patrón de interferencia.
+                </p>
+                <p data-lang-en>
+                    E⁻ travels toward the slits (it's a real particle). The wave in the I sea passes through both slits 
+                    and generates interference. E⁻ passes through only one slit, but its trajectory is guided by the interference pattern.
+                </p>
+
+                <div class="key-result">
+                    <span data-lang-es>No hay "colapso de función de onda" misterioso. Hay perturbación física del medio que destruye la coherencia.</span>
+                    <span data-lang-en>There is no mysterious "wave function collapse". There is physical perturbation of the medium that destroys coherence.</span>
+                </div>
+            </section>
+
+            <!-- Dualidad Onda-Partícula -->
+            <section id="dualidad">
+                <span class="section-number tci-p">P.11</span>
+                <h2>
+                    <span data-lang-es>Resolución de la Dualidad Onda-Partícula</span>
+                    <span data-lang-en>Resolution of Wave-Particle Duality</span>
+                </h2>
+                
+                <ul>
+                    <li data-lang-es><strong>La partícula E es real:</strong> existe, tiene posición definida, se mueve</li>
+                    <li data-lang-en><strong>Particle E is real:</strong> it exists, has defined position, moves</li>
+                    <li data-lang-es><strong>La onda es real:</strong> pero no es el electrón, sino la perturbación que E genera en I</li>
+                    <li data-lang-en><strong>The wave is real:</strong> but it's not the electron, it's the perturbation E generates in I</li>
+                    <li data-lang-es><strong>La "dualidad" es ilusoria:</strong> el electrón parece onda porque siempre viene con su ondulación</li>
+                    <li data-lang-en><strong>The "duality" is illusory:</strong> the electron seems like a wave because it always comes with its wave pattern</li>
+                </ul>
+
+                <div class="analogy">
+                    <p class="analogy-label">
+                        <span data-lang-es>💡 Analogía</span>
+                        <span data-lang-en>💡 Analogy</span>
+                    </p>
+                    <p data-lang-es>
+                        Un barco no es una ola, pero siempre va acompañado de olas. 
+                        El electrón es el barco. La "función de onda" es su estela en el mar I.
+                    </p>
+                    <p data-lang-en>
+                        A boat is not a wave, but it always comes with waves. 
+                        The electron is the boat. The "wave function" is its wake in the I sea.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SÍNTESIS -->
+            <!-- ========================================== -->
+
+            <div class="divider"></div>
+
+            <!-- Correspondencias -->
+            <section id="correspondencias">
+                <span class="section-number">S.01</span>
+                <h2>
+                    <span data-lang-es>Correspondencias con Física Estándar</span>
+                    <span data-lang-en>Correspondences with Standard Physics</span>
+                </h2>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-lang-es>Concepto Estándar</th>
+                                <th data-lang-en>Standard Concept</th>
+                                <th data-lang-es>Interpretación TCI</th>
+                                <th data-lang-en>IFT Interpretation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-es>Espacio vacío</td>
+                                <td data-lang-en>Empty space</td>
+                                <td data-lang-es>Medio I con densidad ρ₀</td>
+                                <td data-lang-en>I medium with density ρ₀</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Masa</td>
+                                <td data-lang-en>Mass</td>
+                                <td data-lang-es>Hueco en el campo I</td>
+                                <td data-lang-en>Hole in the I field</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Inercia</td>
+                                <td data-lang-en>Inertia</td>
+                                <td data-lang-es>Resistencia del medio I</td>
+                                <td data-lang-en>Resistance of I medium</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Materia oscura</td>
+                                <td data-lang-en>Dark matter</td>
+                                <td data-lang-es>No existe — es vórtice I</td>
+                                <td data-lang-en>Doesn't exist — it's I vortex</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Función de onda</td>
+                                <td data-lang-en>Wave function</td>
+                                <td data-lang-es>Perturbación real en I</td>
+                                <td data-lang-en>Real perturbation in I</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Cuantización</td>
+                                <td data-lang-en>Quantization</td>
+                                <td data-lang-es>Autoconsistencia de ondas</td>
+                                <td data-lang-en>Wave self-consistency</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Fotón</td>
+                                <td data-lang-en>Photon</td>
+                                <td data-lang-es>Onda pura en mar I</td>
+                                <td data-lang-en>Pure wave in I sea</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Verificaciones -->
+            <section id="verificaciones">
+                <span class="section-number">S.02</span>
+                <h2>
+                    <span data-lang-es>Verificaciones Cuantitativas</span>
+                    <span data-lang-en>Quantitative Verifications</span>
+                </h2>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-lang-es>Fenómeno</th>
+                                <th data-lang-en>Phenomenon</th>
+                                <th data-lang-es>Predicción</th>
+                                <th data-lang-en>Prediction</th>
+                                <th data-lang-es>Observado</th>
+                                <th data-lang-en>Observed</th>
+                                <th data-lang-es>Acuerdo</th>
+                                <th data-lang-en>Agreement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-es>Dilatación GPS</td>
+                                <td data-lang-en>GPS dilation</td>
+                                <td>+38.5 μs/día</td>
+                                <td>+38.5 μs/día</td>
+                                <td style="color: var(--success);" data-lang-es>Exacto</td>
+                                <td style="color: var(--success);" data-lang-en>Exact</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Deflexión de luz</td>
+                                <td data-lang-en>Light deflection</td>
+                                <td>1.75"</td>
+                                <td>1.75"</td>
+                                <td style="color: var(--success);" data-lang-es>Exacto</td>
+                                <td style="color: var(--success);" data-lang-en>Exact</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Energía del vacío</td>
+                                <td data-lang-en>Vacuum energy</td>
+                                <td>2.16 × 10⁻¹⁰ J/m³</td>
+                                <td>5.6 × 10⁻¹⁰ J/m³</td>
+                                <td style="color: var(--success);">Factor 2.6</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Tiempos de vida</td>
+                                <td data-lang-en>Lifetimes</td>
+                                <td>τ ∝ n²·⁸⁵</td>
+                                <td data-lang-es>Datos exp.</td>
+                                <td data-lang-en>Exp. data</td>
+                                <td style="color: var(--success);">&lt; 5% error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Discusión: Relación con el Éter -->
+            <section id="discusion-eter">
+                <span class="section-number">S.03</span>
+                <h2>
+                    <span data-lang-es>Discusión: ¿Es TCI un Retorno al Éter?</span>
+                    <span data-lang-en>Discussion: Is IFT a Return to the Ether?</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Una objeción natural a TCI es su aparente similitud con el éter luminífero del siglo XIX, 
+                    descartado tras el experimento de Michelson-Morley (1887). Sin embargo, las diferencias 
+                    son fundamentales:
+                </p>
+                <p data-lang-en>
+                    A natural objection to IFT is its apparent similarity to the 19th century luminiferous ether, 
+                    discarded after the Michelson-Morley experiment (1887). However, the differences 
+                    are fundamental:
+                </p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-lang-es>Éter Clásico (s. XIX)</th>
+                                <th data-lang-en>Classical Ether (19th c.)</th>
+                                <th data-lang-es>Campo I (TCI)</th>
+                                <th data-lang-en>I Field (IFT)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-lang-es>Marco de referencia <strong>absoluto</strong></td>
+                                <td data-lang-en><strong>Absolute</strong> reference frame</td>
+                                <td data-lang-es>No hay marco absoluto</td>
+                                <td data-lang-en>No absolute frame</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>La luz viaja <strong>a través</strong> del éter</td>
+                                <td data-lang-en>Light travels <strong>through</strong> ether</td>
+                                <td data-lang-es>La luz <strong>es</strong> una perturbación del medio</td>
+                                <td data-lang-en>Light <strong>is</strong> a perturbation of the medium</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Materia se mueve a través del éter</td>
+                                <td data-lang-en>Matter moves through the ether</td>
+                                <td data-lang-es>Materia es un <strong>hueco</strong> que arrastra su gradiente</td>
+                                <td data-lang-en>Matter is a <strong>hole</strong> that drags its gradient</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es>Predice "viento de éter"</td>
+                                <td data-lang-en>Predicts "ether wind"</td>
+                                <td data-lang-es>No hay viento: el hueco lleva su entorno</td>
+                                <td data-lang-en>No wind: the hole carries its surroundings</td>
+                            </tr>
+                            <tr>
+                                <td data-lang-es><strong>Contradice</strong> la relatividad</td>
+                                <td data-lang-en><strong>Contradicts</strong> relativity</td>
+                                <td data-lang-es><strong>Reproduce</strong> los efectos relativistas</td>
+                                <td data-lang-en><strong>Reproduces</strong> relativistic effects</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>
+                    <span data-lang-es>¿Por qué no hay "viento de éter"?</span>
+                    <span data-lang-en>Why is there no "ether wind"?</span>
+                </h3>
+                
+                <p data-lang-es>
+                    En el éter clásico, la materia se movía <em>a través</em> de un medio estático. 
+                    Esto implicaba que un observador en movimiento debería detectar un "viento" — una 
+                    diferencia en la velocidad de la luz según la dirección. Michelson-Morley no lo detectó.
+                </p>
+                <p data-lang-en>
+                    In the classical ether, matter moved <em>through</em> a static medium. 
+                    This implied that a moving observer should detect a "wind" — a 
+                    difference in the speed of light depending on direction. Michelson-Morley didn't detect it.
+                </p>
+
+                <p data-lang-es>
+                    En TCI, la materia no se mueve <em>a través</em> del campo I — la materia <strong>es</strong> 
+                    una perturbación (hueco) en el campo I. Cuando un cuerpo se mueve, su hueco y el gradiente 
+                    de densidad circundante se mueven con él. El observador siempre está en el centro de su 
+                    propia perturbación local. No hay marco absoluto contra el cual medir el movimiento.
+                </p>
+                <p data-lang-en>
+                    In IFT, matter doesn't move <em>through</em> the I field — matter <strong>is</strong> 
+                    a perturbation (hole) in the I field. When a body moves, its hole and the surrounding 
+                    density gradient move with it. The observer is always at the center of their own 
+                    local perturbation. There is no absolute frame against which to measure motion.
+                </p>
+
+                <h3>
+                    <span data-lang-es>¿Por qué c es constante para todos los observadores?</span>
+                    <span data-lang-en>Why is c constant for all observers?</span>
+                </h3>
+                
+                <p data-lang-es>
+                    La velocidad c es la velocidad de propagación de perturbaciones en el campo I. 
+                    Cada observador mide c respecto a su entorno local del campo I — que se mueve con él. 
+                    Por esto, todos miden el mismo valor de c, independientemente de su estado de movimiento. 
+                    La constancia de c no es un postulado misterioso: es consecuencia de que cada observador 
+                    está inmerso en su propia región del medio.
+                </p>
+                <p data-lang-en>
+                    The speed c is the propagation speed of perturbations in the I field. 
+                    Each observer measures c relative to their local I field environment — which moves with them. 
+                    This is why everyone measures the same value of c, regardless of their state of motion. 
+                    The constancy of c is not a mysterious postulate: it's a consequence of each observer 
+                    being immersed in their own region of the medium.
+                </p>
+
+                <div class="key-result">
+                    <span data-lang-es>TCI no resucita el éter clásico. Propone un medio físico con propiedades radicalmente diferentes que <em>produce</em> la fenomenología relativista en lugar de contradecirla.</span>
+                    <span data-lang-en>IFT does not resurrect the classical ether. It proposes a physical medium with radically different properties that <em>produces</em> relativistic phenomenology instead of contradicting it.</span>
+                </div>
+            </section>
+
+            <!-- Trabajo Futuro -->
+            <section id="trabajo-futuro">
+                <span class="section-number">S.04</span>
+                <h2>
+                    <span data-lang-es>Trabajo Futuro</span>
+                    <span data-lang-en>Future Work</span>
+                </h2>
+
+                <h3 data-lang-es>Verificaciones pendientes</h3>
+                <h3 data-lang-en>Pending verifications</h3>
+                <ul>
+                    <li data-lang-es>Precesión del perihelio de Mercurio (43"/siglo)</li>
+                    <li data-lang-en>Mercury perihelion precession (43"/century)</li>
+                    <li data-lang-es>Ondas gravitacionales como perturbaciones en el campo I</li>
+                    <li data-lang-en>Gravitational waves as perturbations in the I field</li>
+                </ul>
+
+                <h3 data-lang-es>Desarrollo teórico</h3>
+                <h3 data-lang-en>Theoretical development</h3>
+                <ul>
+                    <li data-lang-es>Formulación Lagrangiana covariante</li>
+                    <li data-lang-en>Covariant Lagrangian formulation</li>
+                    <li data-lang-es>Derivación de h desde propiedades microscópicas del mar I</li>
+                    <li data-lang-en>Derivation of h from microscopic properties of the I sea</li>
+                </ul>
+
+                <h3 data-lang-es>Preguntas abiertas</h3>
+                <h3 data-lang-en>Open questions</h3>
+                <ul>
+                    <li data-lang-es>¿Cuál es la estructura exacta de protones y neutrones?</li>
+                    <li data-lang-en>What is the exact structure of protons and neutrons?</li>
+                    <li data-lang-es>¿El spin es rotación literal de las partículas?</li>
+                    <li data-lang-en>Is spin a literal rotation of particles?</li>
+                </ul>
+            </section>
+
+            <!-- Contacto -->
+            <section id="contacto">
+                <span class="section-number">S.05</span>
+                <h2>
+                    <span data-lang-es>Contacto</span>
+                    <span data-lang-en>Contact</span>
+                </h2>
+                
+                <p data-lang-es>
+                    Para consultas, colaboraciones o discusiones sobre la Teoría del Campo Intangible:
+                </p>
+                <p data-lang-en>
+                    For inquiries, collaborations, or discussions about the Intangible Field Theory:
+                </p>
+
+                <div class="comparison">
+                    <div class="comparison-item highlight-tci">
+                        <div class="comparison-title">
+                            <span data-lang-es>Autor</span>
+                            <span data-lang-en>Author</span>
+                        </div>
+                        <p style="margin-bottom: 0;">
+                            <strong>Nicolás Irigoyen</strong><br>
+                            <a href="mailto:nicolasirigoyen@teoriadelcampointangible.org" style="color: var(--accent);">nicolasirigoyen@teoriadelcampointangible.org</a>
+                        </p>
+                    </div>
+                    <div class="comparison-item highlight-tcip">
+                        <div class="comparison-title">
+                            <span data-lang-es>Contacto General</span>
+                            <span data-lang-en>General Contact</span>
+                        </div>
+                        <p style="margin-bottom: 0;">
+                            <strong>TCI / IFT</strong><br>
+                            <a href="mailto:contact@teoriadelcampointangible.org" style="color: var(--accent-blue);">contact@teoriadelcampointangible.org</a><br>
+                            <a href="https://x.com/tci_research" target="_blank" style="color: var(--accent-blue);">@tci_research</a>
+                        </p>
+                    </div>
+                </div>
+
+                <p data-lang-es>
+                    Este documento se presenta como invitación a la comunidad científica para explorar formalmente estas ideas.
+                </p>
+                <p data-lang-en>
+                    This document is presented as an invitation to the scientific community to formally explore these ideas.
+                </p>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p class="footer-quote">
+                    <span data-lang-es>«La Verdad es inefable; no puede ser expresada en palabras, pues está más allá del lenguaje.»</span>
+                    <span data-lang-en>"Truth is ineffable; it cannot be expressed in words, for it is beyond language."</span>
+                </p>
+                <p class="footer-author">
+                    <span data-lang-es>— Atribuido a Hermes Trismegisto</span>
+                    <span data-lang-en>— Attributed to Hermes Trismegistus</span>
+                </p>
+                <p class="footer-license">
+                    <span data-lang-es>Teoría del Campo Intangible — Documento Unificado</span>
+                    <span data-lang-en>Intangible Field Theory — Unified Document</span><br>
+                    Nicolás Irigoyen, 2025<br><br>
+                    Creative Commons Attribution 4.0 (CC BY 4.0)<br>
+                    <span data-lang-es>Se permite compartir, copiar y modificar, siempre que se dé atribución al autor.</span>
+                    <span data-lang-en>Sharing, copying, and modification permitted with attribution to the author.</span>
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Language switching
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            // Desktop buttons
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            // Mobile buttons
+            const mobileEs = document.getElementById('mobile-btn-es');
+            const mobileEn = document.getElementById('mobile-btn-en');
+            if (mobileEs) mobileEs.classList.toggle('active', lang === 'es');
+            if (mobileEn) mobileEn.classList.toggle('active', lang === 'en');
+            localStorage.setItem('tci-lang', lang);
+        }
+
+        // Load saved language preference (default: English)
+        const savedLang = localStorage.getItem('tci-lang') || 'en';
+        setLang(savedLang);
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('mobile-open');
+        }
+
+        // Tab functionality
+        function showTab(event, tabId) {
+            const tabContainer = event.target.closest('.tabs');
+            tabContainer.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            tabContainer.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Active nav link
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
